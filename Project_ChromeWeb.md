@@ -51,3 +51,52 @@ function loginFormSubmit(event) { // argument(event)는 임의의 값으로 아�
 
 loginForm.addEventListener("submit", loginFormSubmit);
 
+
+ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+
+greeting.innerText = `안녕 ${username}`;
+greeting.innerText = "안녕 " + username; 
+-> 위 2개의 코드는 같은 코드임. (중요한 기호 = ``(백틱))
+
+
+
+
+
+- localstorage 사용
+localStorage.setItem("유저명", username);
+localStorage.getItem("유저명");
+localStorage.removeItem("유저명");
+
+- 중복되는 코드 function으로 활용 but, 호출되는 위치에 따라 인자가 달라짐
+
+const loginForm = document.querySelector("#login-form");
+const loginInput = document.querySelector("#login-form input");
+const greeting = document.querySelector("#greeting");
+
+const HIDDEN_CLASSNAME = "hidden";
+const USERNAME_KEY = "유저명";
+
+function loginSubmit(event) {
+   event.preventDefault();
+   loginForm.classList.add(HIDDEN_CLASSNAME);
+   const username = loginInput.value;
+   localStorage.setItem("유저명", username);
+   paintGreeting(username); 
+     // paintGreeting(saveUsername)과 인자가 다른 이유는 함수를 호출하는 위치에 따라 유저정보는 다른 곳에서 오기 때문. 
+}
+
+function paintGreeting(username) {
+   greeting.innerText = `안녕 ${username}`;
+   greeting.classList.remove(HIDDEN_CLASSNAME);
+}
+
+const saveUsername = localStorage.getItem(USERNAME_KEY);
+
+if(saveUsername === null) {
+   loginForm.classList.remove(HIDDEN_CLASSNAME);
+   loginForm.addEventListener("submit", loginSubmit);
+} else {
+   paintGreeting(saveUsername);
+   // 여기 말하는겁니다.
+}
