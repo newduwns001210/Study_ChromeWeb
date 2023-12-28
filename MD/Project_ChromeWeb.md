@@ -34,9 +34,9 @@ loginButton.addEventListener("click", loginButtonClick);
 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
 
-1. `form의 기본동작 = submit`
-2. `href의 기본동작 = link(page move)`
-3. `브라우저에서 기본적으로 실행되는 event(form의 자동 submit / href의 page move)를 막는 방법`
+3. `form의 기본동작 = submit`
+4. `href의 기본동작 = link(page move)`
+5. `브라우저에서 기본적으로 실행되는 event(form의 자동 submit / href의 page move)를 막는 방법`
 > argument.preventDefault();
 
 **코드**
@@ -61,11 +61,11 @@ loginForm.addEventListener("submit", loginFormSubmit);
 `greeting.innerText = "안녕 " + username;`
 > 위 2개의 코드는 같은 코드임. (중요한 기호 = ``(백틱))
 
-1. `localstorage 사용`
+6. `localstorage 사용`
 > localStorage.setItem("유저명", username);
 > localStorage.getItem("유저명");
 > localStorage.removeItem("유저명");
-2. `중복되는 코드 function으로 활용 but, 호출되는 위치에 따라 인자가 달라짐`
+7. `중복되는 코드 function으로 활용 but, 호출되는 위치에 따라 인자가 달라짐`
 
 **코드**
 const loginForm = document.querySelector("#login-form");
@@ -100,6 +100,26 @@ if(saveUsername === null) {
 }
 
 ------------------------------------------------------------------------------------------------------------------------------------------------
+ 
+ 
  **CLOCK**
+
+1. Intervlas / TimeOut
+- intervals = 매번 일어나야하는 무언가 ex) 매 2초마다 무언가 일어난다.
+- timeout = 얼마 후 일어나야하는 무언가 ex) 2초 후 무언가 일어난다
+> setInterval(function, ms); 이렇게 사용함. (1000ms면 1초)
+> setTimeout(function, ms);
+
+**간단한 시계 만들기 코드**
+const clock = document.getElementById("clock");
+
+function getClock() {
+    const date = new Date();
+   clock.innerText = (`${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`);
+}
+
+getClock();
+setInterval(getClock, 1000);
+> 하지만 아직 초가 59에서 0으로 초기화 될 때, 00으로 표시가 안됨 
 
 
