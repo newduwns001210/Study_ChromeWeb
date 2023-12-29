@@ -24,7 +24,7 @@ function loginButtonClick() {
    } else if (username.length > 5) {
       alert("이름이 너무 깁니다.")
    }
-   // -> html에서 require maxlength로 문자길이 제한 가능
+   // `-> html에서 require maxlength로 문자길이 제한 가능`
    */
 }
 
@@ -43,10 +43,10 @@ loginButton.addEventListener("click", loginButtonClick);
 const loginForm = document.querySelector("#login-form");
 const loginInput = document.querySelector("#login-form input");
 
-function loginFormSubmit(event) { // argument(event)는 임의의 값으로 아무렇게나 줘도 상관없음.
+function loginFormSubmit(event) { // `argument(event)는 임의의 값으로 아무렇게나 줘도 상관없음.`
    event.preventDefault(); 
-   // -> 어떤 event의 기본 행동이든지 발생되지 않도록 막는 것.
-   // 이 function에서 기본 행동은 form이 submit하면 브라우저는 페이지를 새로고침하는 것.
+   // `-> 어떤 event의 기본 행동이든지 발생되지 않도록 막는 것.`
+   // `이 function에서 기본 행동은 form이 submit하면 브라우저는 페이지를 새로고침하는 것.`
    const username = loginInput.value;
    console.log(username);
 }
@@ -81,7 +81,7 @@ function loginSubmit(event) {
    const username = loginInput.value;
    localStorage.setItem("유저명", username);
    paintGreeting(username); 
-     // paintGreeting(saveUsername)과 인자가 다른 이유는 함수를 호출하는 위치에 따라 유저정보는 다른 곳에서 오기 때문. 
+     // `paintGreeting(saveUsername)과 인자가 다른 이유는 함수를 호출하는 위치에 따라 유저정보는 다른 곳에서 오기 때문.`
 }
 
 function paintGreeting(username) {
@@ -96,7 +96,7 @@ if(saveUsername === null) {
    loginForm.addEventListener("submit", loginSubmit);
 } else {
    paintGreeting(saveUsername);
-   // 여기 말하는겁니다.
+   // `여기 말하는겁니다.`
 }
 
 ------------------------------------------------------------------------------------------------------------------------------------------------
@@ -118,8 +118,32 @@ function getClock() {
    clock.innerText = (`${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`);
 }
 
-getClock();
+getClock(); // `시간이 띄워진 상태로 시작하기 위해서 추가한 코드`
 setInterval(getClock, 1000);
 > 하지만 아직 초가 59에서 0으로 초기화 될 때, 00으로 표시가 안됨 
+> 이제 이걸 다뤄볼꺼야(문자 채우기)
 
+2. Padstart
+- "1"이 아니라 "01" 이렇게 표시되게 하는 법.
+- string.padStart(string_length, "앞에 추가할 string");
+   > "1".padStart(2, "0"); -> string_length가 2가 될 때까지 공백을 0으로 채운다. 앞에서부터.
+- padEnd도 있음 똑같은 구조인데 이건 string 끝에 문자를 추가해줌.
+
+3. String
+- String();
+- data type을 string으로 바꿔줌
+
+**코드**
+const clock = document.getElementById("clock");
+
+function getClock() {
+    const date = new Date();
+    const hour = String(date.getHours()).padStart(2, "0");
+    const minute = String(date.getMinutes()).padStart(2, "0");
+    const second= String(date.getSeconds()).padStart(2, "0");
+   clock.innerText = `${hour}:${minute}:${second}`;
+}
+
+getClock(); // `시간이 띄워진 상태로 시작하기 위해서 추가한 코드`
+setInterval(getClock, 1000);
 
