@@ -104,9 +104,9 @@ if(saveUsername === null) {
  
  **CLOCK**
 
-1. Intervlas / TimeOut
-- intervals = 매번 일어나야하는 무언가 ex) 매 2초마다 무언가 일어난다.
-- timeout = 얼마 후 일어나야하는 무언가 ex) 2초 후 무언가 일어난다
+1. `Intervlas / TimeOut`
+- `intervals = 매번 일어나야하는 무언가 ex) 매 2초마다 무언가 일어난다.`
+- `timeout = 얼마 후 일어나야하는 무언가 ex) 2초 후 무언가 일어난다`
 > setInterval(function, ms); 이렇게 사용함. (1000ms면 1초)
 > setTimeout(function, ms);
 
@@ -123,15 +123,15 @@ setInterval(getClock, 1000);
 > 하지만 아직 초가 59에서 0으로 초기화 될 때, 00으로 표시가 안됨 
 > 이제 이걸 다뤄볼꺼야(문자 채우기)
 
-2. Padstart
-- "1"이 아니라 "01" 이렇게 표시되게 하는 법.
-- string.padStart(string_length, "앞에 추가할 string");
+2. `Padstart`
+- `"1"이 아니라 "01" 이렇게 표시되게 하는 법.`
+- `string.padStart(string_length, "앞에 추가할 string");`
    > "1".padStart(2, "0"); -> string_length가 2가 될 때까지 공백을 0으로 채운다. 앞에서부터.
-- padEnd도 있음 똑같은 구조인데 이건 string 끝에 문자를 추가해줌.
+- `padEnd도 있음 똑같은 구조인데 이건 string 끝에 문자를 추가해줌.`
 
-3. String
-- String();
-- data type을 string으로 바꿔줌
+3. `String`
+- `String();`
+- `data type을 string으로 바꿔줌`
 
 **코드**
 const clock = document.getElementById("clock");
@@ -151,15 +151,55 @@ setInterval(getClock, 1000);
 ------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-**Quotes**
+**Quotes and Background**
 
-1. randomness
-- 
+1. `Math module``
+- `그 중 하나의 함수 Math.randaom(); -> 0부터 1 사이의 수를 랜덤하게 보여줌`
+- `Math.round(); -> 1~1.5까진 1을 돌려줌, 1.6~1.9까지 2를 돌려줌.`
+- `Math.ceil(); -> 1만 1을 돌려줌, 1.1~1.9까진 2를 돌려줌.(1.000001도 2를 줌.)`
+- `Math.floor(); -> ceil과 반대 / 1.99999도 1을 돌려줌, 2만 2를 돌려줌.`
 
-2. Math module
-- 그 중 하나의 함수 Math.randaom(); -> 0부터 1 사이의 수를 랜덤하게 보여줌.
-- Math.round(); -> 1~1.5까진 1을 돌려줌, 1.6~1.9까지 2를 돌려줌.
-- Math.ceil(); -> 1만 1을 돌려줌, 1.1~1.9까진 2를 돌려줌.(1.000001도 2를 줌.)
-- Math.floor(); -> ceil과 반대 / 1.99999도 1을 돌려줌, 2만 2를 돌려줌.
+2. `createElement()`
+- `document.createElement(); 이렇게 사용`
 
-3. 
+**quotes 코드**
+const quotes = [
+    // 생략
+];
+
+const quote = document.querySelector("#quotes span:first-child"); 
+const author = document.querySelector("#quotes span:last-child"); 
+
+const randomquote = quotes[Math.floor(Math.random() * quotes.length)];
+
+quote.innerText = randomquote.quote;
+author.innerText = randomquote.author;
+
+**background 코드**
+const images = [
+    // 생략
+];
+
+const bgImages = document.createElement("img"); // `새로운 HTML Element 생성`
+const chooseImage = images[Math.floor(Math.random() * images.length)];
+
+bgImages.src = `img/${chooseImage}`; // `새로운 HTML Element 생성`
+
+document.body.appendChild(bgImages); // `appendChild로 body 내부에 bgImages라는 새 HTML Element 추가`
+
+
+
+**유용한 정보**
+`사진을 배경이미지로 넣고 싶다면`
+img {
+position:absolute;
+width:100%;
+height:100%;
+left: 0px;
+top: 0px;
+right:0px;
+bottom:0px;
+z-index: -1;
+opacity:80%;
+}
+`설정 하면 됨. opacity는 취향대로 하시면 되고 z-index는 text의 z-index보다 낮으면 뒷 배경으로 설정 됨.`
