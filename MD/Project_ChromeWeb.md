@@ -277,3 +277,168 @@ toDoForm.addEventListener("submit", handleToDoSubmit);
 <br/>
 
 2. toDoDelete Button
+   > Button의 property중 parent(부모)가 있음 그 property에서 삭제하고 싶은 ToDo 의 target.parentElement(parentNode) 정보를 알 수 있고, 지정할 수 있음.
+
+   <br/>
+
+**코드**
+```
+const toDoForm = document.getElementById("todo-form");
+const toDoList = document.getElementById("todo-list");
+const toDoInput = toDoForm.querySelector("input");
+//const toDoInput = document.querySelector("#todo-form input"); 
+ 
+function paintToDo(newToDo) { 
+    const li = document.createElement("li");
+    const span = document.createElement("span");
+    span.innerText = newToDo;
+    const button = document.createElement("button");
+    button.innerText = "❌"
+    button.addEventListener("click", deleteToDo);
+    li.appendChild(span);
+    li.appendChild(button);
+    toDoList.appendChild(li);
+} 
+
+function deleteToDo(event) {
+    // argument의 event를 넣은 이유는 click event의 대한 정보를 얻어야하기 때문.
+    // 왜 얻어야 하나? -> ToDo가 여러갠데 어떤 ToDo의 삭제버튼을 누르는지 알아야하기 때문.
+    const deleteLi = (event.target.parentElement);
+    deleteLi.remove();
+    // event.target.parentElement에서 어떤 ToDo가 클릭 되었는지 알 수 있음.
+}
+
+function handleToDoSubmit(event) {
+    event.preventDefault();
+    const newToDo = toDoInput.value; 
+    toDoInput.value = ""; 
+    paintToDo(newToDo);
+}
+
+toDoForm.addEventListener("submit", handleToDoSubmit);
+```
+
+<br/>
+
+3. saving toDo
+   > - 왜? -> 웹페이지를 새로고침 할 때마다 ToDo들이 모두 삭제됨.
+   > - newToDo(입력한 ToDo들)가 생길 때마다 toDos에 push해서 localstorage에 저장하고 싶음.
+   > - 그리고, paintToDo를 그리기 전에 toDos(array)를 가져와서 newToDo를 push 할 예정. 
+   > `but, localstorage에는 text만 저장할 수 있음.`
+
+- `(중요)`JS의 object나 array 등등 어떤 것이든 string으로 바꿔주는 기능
+   > JSON.stingify();
+
+<br/>
+
+**코드**
+```
+const toDoForm = document.getElementById("todo-form");
+const toDoList = document.getElementById("todo-list");
+const toDoInput = toDoForm.querySelector("input");
+//const toDoInput = document.querySelector("#todo-form input");
+
+const toDos = [];
+ 
+function saveToDos() {
+    localStorage.setItem("toDos", JSON.stringify()); 
+    // JSON.stringify()를 이용해 array로 localStorage에 저장함.
+}
+
+function paintToDo(newToDo) { 
+    const li = document.createElement("li");
+    const span = document.createElement("span");
+    span.innerText = newToDo;
+    const button = document.createElement("button");
+    button.innerText = "❌"
+    button.addEventListener("click", deleteToDo);
+    li.appendChild(span);
+    li.appendChild(button);
+    toDoList.appendChild(li);
+} 
+
+function deleteToDo(event) { 
+    const deleteLi = (event.target.parentElement);
+    deleteLi.remove();
+}
+
+function handleToDoSubmit(event) {
+    event.preventDefault();
+    const newToDo = toDoInput.value; 
+    toDoInput.value = ""; 
+    toDos.push(newToDo);
+    paintToDo(newToDo);
+    saveToDos();
+}
+
+toDoForm.addEventListener("submit", handleToDoSubmit);
+```
+
+<br/>
+
+1. loding toDos
+   > 여전히 웹페이지를 새로고침하면 웹페이지에 표시되어 있던 toDo들이 사라짐.
+   > but, localStorage에는 toDo들이 array로 저장되어 있음. 이 데이터를 불러오도록 할꺼임.
+
+- JSON.parse();를 사용하여 localStorage에 string으로 저장되어 있던 toDos를 array로 바꿔줌.
+   > 왜 JSON.stingify(); 썼다가 다시 JSON.parse(); 쓰면서 복잡하고 귀찮게 하냐면, 애초에 처음부터 loclaStorage에 array로 저장이 되질 않으니 저장이 가능한 string으로 변환하여 저장 후 loding 할 때 다시 array로 변환 후 사용하는 거야. 
+
+- forEach
+   > array에 있는 각각의 item에 대해서 function을 실행해줌. (item이 10개면 지정한 function을 10개의 각각의 item에 1번씩 실행시킴.)
+
+<br/>
+
+**코드**
+```
+const toDoForm = document.getElementById("todo-form");
+const toDoList = document.getElementById("todo-list");
+const toDoInput = toDoForm.querySelector("input");
+//const toDoInput = document.querySelector("#todo-form input");
+
+let toDos = []; // 정보가 추가되고 삭제되는 등 데이터가 바뀔 수 있으니 let으로 바꿔줌.
+const TODOS_KEY = "todos";
+
+function saveToDos() {
+    localStorage.setItem(TODOS_KEY, JSON.stringify(toDos)); 
+}
+
+function paintToDo(newToDo) { 
+    const li = document.createElement("li");
+    const span = document.createElement("span");
+    span.innerText = newToDo;
+    const button = document.createElement("button");
+    button.innerText = "❌"
+    button.addEventListener("click", deleteToDo);
+    li.appendChild(span);
+    li.appendChild(button);
+    toDoList.appendChild(li);
+} 
+
+function deleteToDo(event) { 
+    const deleteLi = (event.target.parentElement);
+    deleteLi.remove();
+}
+
+function handleToDoSubmit(event) {
+    event.preventDefault();
+    const newToDo = toDoInput.value; 
+    toDoInput.value = ""; 
+    toDos.push(newToDo);
+    paintToDo(newToDo);
+    saveToDos();
+}
+
+toDoForm.addEventListener("submit", handleToDoSubmit);
+
+const alreadySavedToDos = localStorage.getItem(TODOS_KEY);
+
+if (alreadySavedToDos) {
+    const parsedToDos = JSON.parse(alreadySavedToDos);
+    parsedToDos.forEach(paintToDo); 
+    // newToDo에 저장되어 있는 array의 각각의 item 정보를 불러와서 TODO를 그려줌.
+    // 하지만 웹페이지를 새로고침하고 TODO를 추가입력하고 정보를 보내면 새로고침 이후의 정보만 newToDo에 push하게됨.
+    toDos = parsedToDos;
+    // 웹페이지를 새로고침해도 원래 있던 toDos를 복원하고 새로운 데이터를 추가.
+    // localStorage에 원래 있던 정보를 유지한 채로 추가 입력된 newToDo를 push. 
+}
+```
