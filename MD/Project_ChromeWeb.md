@@ -2,7 +2,8 @@
 
 1. `모든 것은 HTML에서 시작 -> element들을 끌고 와서 JS에서 이런저런 작업을 해줌.`
 2. `html에서 div 대신 form을 사용함. form 안의 속성에는 required(필수), maxlength , type, placeholder 등이있다.`
-   > input 밖을 form으로 감싸면 따로 조건문을 주지않아도 html이 최대길이, 빈칸등을 잡아준다.    
+   > input 밖을 form으로 감싸면 따로 조건문을 주지않아도 html이 최대길이, 빈칸등을 잡아준다.
+
    > 문제는 버튼을 클릭할때 자동으로 submit(새로고침)된다는 것
 
 <br/>
@@ -34,9 +35,10 @@ loginButton.addEventListener("click", loginButtonClick);
 ```
 <br/>
 
-1. `form의 기본동작 = submit`
-2. `href의 기본동작 = link(page move)`
-3. `브라우저에서 기본적으로 실행되는 event(form의 자동 submit / href의 page move)를 막는 방법 : argument.preventDefault();`
+1. form의 기본동작 = `submit`
+2. href의 기본동작 = `link(page move)`
+3. `브라우저에서 기본적으로 실행되는 event(form의 자동 submit / href의 page move)를 막는 방법`
+    > argument.preventDefault();
 
 <br/>
 
@@ -169,10 +171,13 @@ setInterval(getClock, 1000);
 # STEP 3. Quotes and Background
 
 1. `Math module`
-   > `그 중 하나의 함수 Math.randaom(); -> 0부터 1 사이의 수를 랜덤하게 보여줌`  
-   > `Math.round(); -> 1~1.5까진 1을 돌려줌, 1.6~1.9까지 2를 돌려줌.`   
-   > `Math.ceil(); -> 1만 1을 돌려줌, 1.1~1.9까진 2를 돌려줌.(1.000001도 2를 줌.)`  
-   > `Math.floor(); -> ceil과 반대 / 1.99999도 1을 돌려줌, 2만 2를 돌려줌.`
+   > 그 중 하나의 함수 Math.randaom(); -> 0부터 1 사이의 수를 랜덤하게 보여줌  
+
+   > Math.round(); -> 1~1.5까진 1을 돌려줌, 1.6~1.9까지 2를 돌려줌.
+
+   > Math.ceil(); -> 1만 1을 돌려줌, 1.1~1.9까진 2를 돌려줌.(1.000001도 2를 줌.)
+
+   > Math.floor(); -> ceil과 반대 / 1.99999도 1을 돌려줌, 2만 2를 돌려줌.
 
 2. `createElement()`
    >`document.createElement(); 이렇게 사용`
@@ -238,11 +243,13 @@ opacity:80%;
 # STEP 4. TO DO LIST 
 
 1. `기본적으로 background 만들기와 비슷함.`
-   > - js 상에서 html element를 만들고 선언한 변수를 호출해와서 element 내부에 삽입   
-   > - appendChild 명령어로 상속시키는게 중요한 파트였음.  
-   > - 하지만, 여기까지의 문제점
-   <br/> 첫번째, 추가한 toDo를 지울 수 없음. (추가만 가능)
-   <br/> 두번째, 웹페이지를 새로고침하면 toDoList가 초기화돼서 사라짐.
+   > `js 상에서 html element를 만들고 선언한 변수를 호출해와서 element 내부에 삽입.`
+
+   > `appendChild 명령어로 상속시키는게 중요한 파트였음.`
+
+   > `하지만, 여기까지의 문제점`
+   <br/> - 첫번째, 추가한 toDo를 지울 수 없음. (추가만 가능)
+   <br/> - 두번째, 웹페이지를 새로고침하면 toDoList가 초기화돼서 사라짐.
 
 <br/>
 
@@ -276,8 +283,8 @@ toDoForm.addEventListener("submit", handleToDoSubmit);
 
 <br/>
 
-2. toDoDelete Button
-   > Button의 property중 parent(부모)가 있음 그 property에서 삭제하고 싶은 ToDo 의 target.parentElement(parentNode) 정보를 알 수 있고, 지정할 수 있음.
+2. `toDoDelete Button`
+   > `Button의 property중 parent(부모)가 있음 그 property에서 삭제하고 싶은 ToDo 의 target.parentElement(parentNode) 정보를 알 수 있고, 지정할 수 있음.`
 
    <br/>
 
@@ -320,13 +327,15 @@ toDoForm.addEventListener("submit", handleToDoSubmit);
 
 <br/>
 
-3. saving toDo
-   > - 왜? -> 웹페이지를 새로고침 할 때마다 ToDo들이 모두 삭제됨.
-   > - newToDo(입력한 ToDo들)가 생길 때마다 toDos에 push해서 localstorage에 저장하고 싶음.
-   > - 그리고, paintToDo를 그리기 전에 toDos(array)를 가져와서 newToDo를 push 할 예정. 
+3. `saving toDo`
+- `왜? -> 웹페이지를 새로고침 할 때마다 ToDo들이 모두 삭제됨.  `
+   > newToDo(입력한 ToDo들)가 생길 때마다 toDos에 push해서 localstorage에 저장하고 싶음. 
+
+   > 그리고, paintToDo를 그리기 전에 toDos(array)를 가져와서 newToDo를 push 할 예정.
+
    > `but, localstorage에는 text만 저장할 수 있음.`
 
-- `(중요)`JS의 object나 array 등등 어떤 것이든 string으로 바꿔주는 기능
+- **(중요)** `JS의 object나 array 등등 어떤 것이든 string으로 바꿔주는 기능`
    > JSON.stingify();
 
 <br/>
@@ -376,14 +385,15 @@ toDoForm.addEventListener("submit", handleToDoSubmit);
 
 <br/>
 
-1. loding toDos
+1. `loding toDos`
    > 여전히 웹페이지를 새로고침하면 웹페이지에 표시되어 있던 toDo들이 사라짐.
+
    > but, localStorage에는 toDo들이 array로 저장되어 있음. 이 데이터를 불러오도록 할꺼임.
 
-- JSON.parse();를 사용하여 localStorage에 string으로 저장되어 있던 toDos를 array로 바꿔줌.
+- `JSON.parse();를 사용하여 localStorage에 string으로 저장되어 있던 toDos를 array로 바꿔줌.`
    > 왜 JSON.stingify(); 썼다가 다시 JSON.parse(); 쓰면서 복잡하고 귀찮게 하냐면, 애초에 처음부터 loclaStorage에 array로 저장이 되질 않으니 저장이 가능한 string으로 변환하여 저장 후 loding 할 때 다시 array로 변환 후 사용하는 거야. 
 
-- forEach
+- `forEach`
    > array에 있는 각각의 item에 대해서 function을 실행해줌. (item이 10개면 지정한 function을 10개의 각각의 item에 1번씩 실행시킴.)
 
 <br/>
