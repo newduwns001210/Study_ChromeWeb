@@ -10,10 +10,11 @@ function saveToDos() {
     localStorage.setItem(TODOS_KEY, JSON.stringify(toDos)); 
 }
 
-function paintToDo(newToDo) { 
+function paintToDo(newToDoObject) { // paintToDo가 받는 argument를 바꿈. (data를 불러와야하기 때문)
     const li = document.createElement("li");
+    li.id = newToDoObject.id;
     const span = document.createElement("span");
-    span.innerText = newToDo;
+    span.innerText = newToDoObject.text; // newToDoObject의 text를 가져옴.
     const button = document.createElement("button");
     button.innerText = "❌"
     button.addEventListener("click", deleteToDo);
@@ -25,14 +26,25 @@ function paintToDo(newToDo) {
 function deleteToDo(event) { 
     const deleteLi = (event.target.parentElement);
     deleteLi.remove();
+    toDos = toDos.filter((toDo) => toDo.id !== parseInt(deleteLi.id));
+    // 여기서 잘 작동하지 않는 걸 확인함. 왜냐하면 여기서 toDo.id는 data type이 num인데 반면 deleteLi의 data type은 string이기 때문.
+    // 그래서 여기서 parsInt 함수를 사용하여 delete.li의 type을 string에서 num으로 바꿔줬음.
+    saveToDos();
+    // 마지막으로 여기서 filtering 되고 새로 생성된 array를 다시 불러옴.
 }
 
 function handleToDoSubmit(event) {
     event.preventDefault();
     const newToDo = toDoInput.value; 
     toDoInput.value = ""; 
-    toDos.push(newToDo);
-    paintToDo(newToDo);
+    const newToDoObject = { 
+        // toDos array에 text가 아닌 여러 아이템을 갖는 Object로 저장하고 위해 생성.
+        text : newToDo,
+        id : Date.now(),
+    };
+    toDos.push(newToDoObject); 
+    // toDos array에 newToDo가 아닌 newToDoObject를 업데이트.
+    paintToDo(newToDoObject);
     saveToDos();
 }
 
@@ -43,9 +55,5 @@ const alreadySavedToDos = localStorage.getItem(TODOS_KEY);
 if (alreadySavedToDos) {
     const parsedToDos = JSON.parse(alreadySavedToDos);
     parsedToDos.forEach(paintToDo); 
-    // newToDo에 저장되어 있는 array의 각각의 item 정보를 불러와서 TODO를 그려줌.
-    // 하지만 웹페이지를 새로고침하고 TODO를 추가입력하고 정보를 보내면 새로고침 이후의 정보만 newToDo에 push하게됨.
     toDos = parsedToDos;
-    // 웹페이지를 새로고침해도 원래 있던 toDos를 복원하고 새로운 데이터를 추가.
-    // localStorage에 원래 있던 정보를 유지한 채로 추가 입력된 newToDo를 push. 
 }

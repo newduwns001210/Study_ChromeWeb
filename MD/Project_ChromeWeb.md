@@ -385,7 +385,7 @@ toDoForm.addEventListener("submit", handleToDoSubmit);
 
 <br/>
 
-1. `loding toDos`
+4. `loding toDos`
    > 여전히 웹페이지를 새로고침하면 웹페이지에 표시되어 있던 toDo들이 사라짐.
 
    > but, localStorage에는 toDo들이 array로 저장되어 있음. 이 데이터를 불러오도록 할꺼임.
@@ -450,5 +450,85 @@ if (alreadySavedToDos) {
     toDos = parsedToDos;
     // 웹페이지를 새로고침해도 원래 있던 toDos를 복원하고 새로운 데이터를 추가.
     // localStorage에 원래 있던 정보를 유지한 채로 추가 입력된 newToDo를 push. 
+}
+```
+
+<br/>
+
+5. Deleting toDo (Upgrade)
+   > toDos array에 각각 아이템들을 text가 아닌 object로 만들고 각각의 object로써 ID를 주고 싶음.
+
+   > 새로 만든 Object와 paintToDo와 연결
+
+- filter (선택옵션이라고 이해하면 편함.)
+   > true만 리턴함. false인 항목을 제외하고 리턴함.
+
+   > 삭제버튼을 누면 array에 있는 아이템 한가지를 지우는 것이 아니라 특정 아이템을 false로 바꾸고 나머지 true 항목들만 가지고 새로운 array를 생성함.
+   
+   > boolean(참 거짓)을 이용한 함수 filter를 만듦.    
+   그 안에 !==(not) 을 활용해서 우리가 삭제하고픈 애를 뺀 나머지만 return 하게 한다.
+    
+<br/>
+
+**코드**
+```
+const toDoForm = document.getElementById("todo-form");
+const toDoList = document.getElementById("todo-list");
+const toDoInput = toDoForm.querySelector("input");
+//const toDoInput = document.querySelector("#todo-form input");
+
+let toDos = []; // 정보가 추가되고 삭제되는 등 데이터가 바뀔 수 있으니 let으로 바꿔줌.
+const TODOS_KEY = "todos";
+
+function saveToDos() {
+    localStorage.setItem(TODOS_KEY, JSON.stringify(toDos)); 
+}
+
+function paintToDo(newToDoObject) { // paintToDo가 받는 argument를 바꿈. (data를 불러와야하기 때문)
+    const li = document.createElement("li");
+    li.id = newToDoObject.id;
+    const span = document.createElement("span");
+    span.innerText = newToDoObject.text; // newToDoObject의 text를 가져옴.
+    const button = document.createElement("button");
+    button.innerText = "❌"
+    button.addEventListener("click", deleteToDo);
+    li.appendChild(span);
+    li.appendChild(button);
+    toDoList.appendChild(li);
+} 
+
+function deleteToDo(event) { 
+    const deleteLi = (event.target.parentElement);
+    deleteLi.remove();
+    toDos = toDos.filter((toDo) => toDo.id !== parseInt(deleteLi.id));
+    // 여기서 잘 작동하지 않는 걸 확인함. 왜냐하면 여기서 toDo.id는 data type이 num인데 반면 deleteLi의 data type은 string이기 때문.
+    // 그래서 여기서 parsInt 함수를 사용하여 delete.li의 type을 string에서 num으로 바꿔줬음.
+    saveToDos();
+    // 마지막으로 여기서 filtering 되고 새로 생성된 array를 다시 불러옴.
+}
+
+function handleToDoSubmit(event) {
+    event.preventDefault();
+    const newToDo = toDoInput.value; 
+    toDoInput.value = ""; 
+    const newToDoObject = { 
+        // toDos array에 text가 아닌 여러 아이템을 갖는 Object로 저장하고 위해 생성.
+        text : newToDo,
+        id : Date.now(),
+    };
+    toDos.push(newToDoObject); 
+    // toDos array에 newToDo가 아닌 newToDoObject를 업데이트.
+    paintToDo(newToDoObject);
+    saveToDos();
+}
+
+toDoForm.addEventListener("submit", handleToDoSubmit);
+
+const alreadySavedToDos = localStorage.getItem(TODOS_KEY);
+
+if (alreadySavedToDos) {
+    const parsedToDos = JSON.parse(alreadySavedToDos);
+    parsedToDos.forEach(paintToDo); 
+    toDos = parsedToDos;
 }
 ```
