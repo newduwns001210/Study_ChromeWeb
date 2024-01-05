@@ -532,3 +532,75 @@ if (alreadySavedToDos) {
     toDos = parsedToDos;
 }
 ```
+
+<br/>
+<br/>
+<br/>
+
+# STEP 5. WEATHER
+
+1. navigator.geolocation.getCurrentPosition()
+   - 사용자의 위치를 줌. (위치 좌표를 줌)
+   - getCurrentPosition
+      > argument가 2개 필요함. (success 시 실행 함수 + error 시 실행 함수)
+      > 그 argument 중 success 함수가 위도와 경도 데이터를 가지고 있음
+      > 위도와 경도 데이터(num)를 장소로 바꿔줄 서비스를 사용해야 함. (그 전에 API 계정을 열어야 함)
+
+   - Weather API
+      > API는 기본적으로 다른 서버의 데이터를 주고 받을 수 있는 방법.
+      > openweathermap.org 접속 -> 로그인 -> API 클릭 -> Current Weather Data의 API call URL을 사용.
+      > URL이 요구하는 데이터와 API key를 입력.
+      > 우리가 있는 장소의 이름과 현재 날씨 data를 줄 것임.
+
+   - JS에서 URL을 부르는 방법
+      > JS에서 const 한 변수들(lat, log, API_KEY)을 백틱(``)을 사용하여 ${} 안에 넣어서 언제 어디서든 내 위치 데이터를 URL에 보낼 수 있게 해주고, API_KEY도 넣어주어 데이터를 바로 블러올 수 있게 해줌.
+      > URL만 불러오고, URL상의 데이터는 받아오지 못한 상태. 
+
+   - (중요) JS가 웹페이지 상으로 URL 상의 데이터를 불러오는 방법
+      > `fetch("URL주소");` (개발자 도구에서 WIFI에 들어가서 확인 가능.)
+      > 당장에 뭔가 일어나지 않고 시간이 조금 걸린뒤에 일어남 -> `promice`
+      > 서버가 응답 할 때까지 기다려야 하기 때문에 then() 함수를 사용.
+      > 이제 여기서 URL을 fetch하고, response(응답)을 받아야함
+
+<br/>
+
+**코드**
+```
+const API_KEY = "fa3c03f71034f3120d888bef86c1ff83";
+
+function onGeoOk(a) { // 데이터를 받아 올 수 있게 아무 argument로 지정해주면 됨.
+    const lat = a.coords.latitude; // 위도
+    const log = a.coords.longitude; // 경도
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${log}&appid=${API_KEY}&units=metric`;
+    // "units=metric" 맨 뒤에 달아 화씨 온도를 섭씨 온도로 받아올 수 있음.
+    // 나머지는 설명 참조 (JS에서 URL을 부르는 방법)
+    fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+            const citySpan = document.querySelector("#weather span:first-child");
+            const weatherSpan = document.querySelector("#weather span:nth-child(2)");
+            const tempSpan = document.querySelector("#weather span:last-child");
+
+            const city = data.name;
+            const weather = data.weather[0].main;
+            const temp = data.main.temp;
+
+            citySpan.innerText = city;
+            weatherSpan.innerText = weather;
+            tempSpan.innerText = temp;
+        });
+    /* JS가 자동으로 URL을 요청하고 웹페이지 상에 데이터를 불러오기만 함.
+       서버가 바로 응답하지 않고, 시간이 조금 걸림 = promise
+       응답할 때까지 기다려야 함 -> then() 함수 사용.
+       이제 여기서 URL을 fetch하고, response(응답)을 받아야함.(json으로 받아옴)
+       받아온 json 데이터에서 then()을 사용해 뽑아서 쓸 데이터만 찾아서 변수 선언.
+       html에 div를 생성하여 
+    */
+}
+
+function onGeoError() {
+    alert("너의 위치를 찾을 수 없어.");
+}
+
+navigator.geolocation.getCurrentPosition(onGeoOk, onGeoError);
+```
