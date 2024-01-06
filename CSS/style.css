@@ -12,3 +12,31 @@
     z-index: -1;
     opacity:80%;
     }
+
+#clock {
+    text-align: center;
+}
+
+#login-form {
+    text-align: center;
+}
+
+#todo-form {
+    text-align: center;
+}
+
+#todo-list {
+    text-align: center;
+}
+
+#greeting {
+    text-align: center;
+}
+
+#quotes {
+    text-align: center;
+}
+
+#weather {
+    text-align: center;
+}

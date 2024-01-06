@@ -16,7 +16,7 @@ function paintToDo(newToDoObject) { // paintToDo가 받는 argument를 바꿈. (
     const span = document.createElement("span");
     span.innerText = newToDoObject.text; // newToDoObject의 text를 가져옴.
     const button = document.createElement("button");
-    button.innerText = "❌"
+    button.innerText = "❌";
     button.addEventListener("click", deleteToDo);
     li.appendChild(span);
     li.appendChild(button);
